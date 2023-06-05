@@ -17,13 +17,11 @@ class ScreenSplash extends StatelessWidget {
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             // Show the splash screen while waiting for the future to complete
-            return Provider.of<SplashScreenProvider>(context)
-                .buildSplashScreen(context);
+            return splashBuilder.buildSplashScreen(context);
           } else {
             if (snapshot.hasError) {
               // Show an error screen if there was an error while fetching data
-              return Provider.of<SplashScreenProvider>(context)
-                  .buildErrorScreen();
+              return splashBuilder.buildErrorScreen();
             } else {
               // Check the logged-in status and return the appropriate screen
               final bool loggedIn = snapshot.data!;

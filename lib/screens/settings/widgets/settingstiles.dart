@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:money_management/constants/color.dart';
-import 'package:money_management/db/model/userdata.dart';
 import 'package:money_management/screens/settings/widgets/listtile.dart';
 import 'package:money_management/widgets/widgets.dart';
 
-Widget settingsTiles(context,{required UserModel userlist}) {
+Widget settingsTiles(context) {
   return Container(
     decoration:
         BoxDecoration(borderRadius: BorderRadius.circular(20), color: plain),
@@ -13,7 +12,7 @@ Widget settingsTiles(context,{required UserModel userlist}) {
     child: Column(
       children: [
         box30(),
-        userUpdate(context,user: userlist),
+        userUpdate(context),
         box10(),
         dataReset(context),
         box10(),

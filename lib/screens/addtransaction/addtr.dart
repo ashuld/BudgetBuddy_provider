@@ -1,13 +1,12 @@
-// ignore_for_file: unrelated_type_equality_checks
-
 import 'package:flutter/material.dart';
 import 'package:money_management/constants/color.dart';
 import 'package:money_management/constants/itemlist.dart';
-import 'package:money_management/db/functions/db_functions.dart';
 import 'package:money_management/db/model/transactions.dart';
+import 'package:money_management/providers/transactionprovider.dart';
 import 'package:money_management/screens/addtransaction/widgets/addtrbackground.dart';
 import 'package:money_management/widgets/bottomnavigation.dart';
 import 'package:money_management/widgets/widgets.dart';
+import 'package:provider/provider.dart';
 
 class ScreenAddTransaction extends StatefulWidget {
   const ScreenAddTransaction({super.key});
@@ -193,9 +192,9 @@ class _ScreenAddTransactionState extends State<ScreenAddTransaction> {
                                     initialDate: DateTime.now(),
                                     firstDate: DateTime(2016),
                                     lastDate: DateTime(2100));
-                                if (newDate == Null) return;
+                                if (newDate == null) return;
                                 setState(() {
-                                  date = newDate!;
+                                  date = newDate;
                                 });
                               },
                               child: customText(
@@ -261,7 +260,6 @@ class _ScreenAddTransactionState extends State<ScreenAddTransaction> {
         selectedType == null) {
       showSnackBarr(context, "Items are Required");
     } else {
-      showToast(message: 'Transaction Added');
       final amount1 = double.parse(amo);
       final trans = TransactionModel(
           type: selectedType!,
@@ -271,8 +269,9 @@ class _ScreenAddTransactionState extends State<ScreenAddTransaction> {
           datetime: date,
           note: no,
           id: DateTime.now().microsecondsSinceEpoch.toString());
-      addtransaction(trans);
-      refreshTransaction();
+      Provider.of<TransactionProvider>(context, listen: false)
+          .addTransaction(trans);
+      showToast(message: 'Transaction Added');
       Navigator.of(context).pushReplacement(
           MaterialPageRoute(builder: (context) => const BottomNavigation()));
     }

@@ -10,12 +10,13 @@ class UserProvider extends ChangeNotifier {
   Future<void> addUser(UserModel value) async {
     final userData = await Hive.openBox<UserModel>(userdb);
     await userData.put(value.id, value);
-    userlist = userData.values.toList();
+    getAllUsers();
     notifyListeners();
   }
 
-  Future<void>getAllUsers() async {
+  Future<void> getAllUsers() async {
     final userdata = await Hive.openBox<UserModel>(userdb);
+    userlist.clear();
     userlist = userdata.values.toList();
     notifyListeners();
   }
@@ -23,29 +24,35 @@ class UserProvider extends ChangeNotifier {
   Future<void> editUser(UserModel value) async {
     final userData = await Hive.openBox<UserModel>(userdb);
     userData.put(value.id, value);
-    userlist = userData.values.toList();
+    getAllUsers();
     notifyListeners();
   }
 
   String get userName {
-  if (userlist.isNotEmpty) {
-    return userlist[0].name;
+    if (userlist.isNotEmpty) {
+      return userlist[0].name;
+    }
+    return '';
   }
-  return '';
-}
 
-String get userPhone {
-  if (userlist.isNotEmpty) {
-    return userlist[0].phn;
+  String get userPhone {
+    if (userlist.isNotEmpty) {
+      return userlist[0].phn;
+    }
+    return '';
   }
-  return '';
-}
 
-String get userEmail {
-  if (userlist.isNotEmpty) {
-    return userlist[0].mail;
+  String get userEmail {
+    if (userlist.isNotEmpty) {
+      return userlist[0].mail;
+    }
+    return '';
   }
-  return '';
-}
 
+  String? get userId {
+    if (userlist.isNotEmpty) {
+      return userlist[0].id;
+    }
+    return '';
+  }
 }

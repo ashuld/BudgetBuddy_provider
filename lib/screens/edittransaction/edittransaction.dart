@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:money_management/constants/color.dart';
 import 'package:money_management/constants/itemlist.dart';
-import 'package:money_management/db/functions/db_functions.dart';
 import 'package:money_management/db/model/transactions.dart';
+import 'package:money_management/providers/transactionprovider.dart';
 import 'package:money_management/screens/edittransaction/widgets/edittrbg.dart';
 import 'package:money_management/widgets/bottomnavigation.dart';
 import 'package:money_management/widgets/widgets.dart';
+import 'package:provider/provider.dart';
 
 class EditTransaction extends StatefulWidget {
   const EditTransaction({super.key, required this.transactionlist});
@@ -260,8 +261,8 @@ class _EditTransactionState extends State<EditTransaction> {
     final nam = transaction.text.trim();
     final amo = amount.text;
     final no = note.text;
-    if (double.parse(amo) <= 0||
-      amo.isEmpty ||
+    if (double.parse(amo) <= 0 ||
+        amo.isEmpty ||
         amo.contains('-') ||
         amo.contains(',') ||
         amo.contains(' ')) {
@@ -282,8 +283,10 @@ class _EditTransactionState extends State<EditTransaction> {
           datetime: date,
           note: no,
           id: widget.transactionlist.id);
-      editTransaction(editedtransaction);
-      refreshTransaction();
+      Provider.of<TransactionProvider>(context, listen: false)
+          .editTransaction(editedtransaction);
+      Provider.of<TransactionProvider>(context, listen: false)
+          .refreshTransaction();
       Navigator.of(context).pushReplacement(
           MaterialPageRoute(builder: (context) => const BottomNavigation()));
     }

@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:money_management/constants/color.dart';
-import 'package:money_management/db/functions/db_functions.dart';
 import 'package:money_management/db/model/userdata.dart';
+import 'package:money_management/providers/userprovider.dart';
 import 'package:money_management/screens/edituser/widgets/edituserbg.dart';
 import 'package:money_management/widgets/bottomnavigation.dart';
 import 'package:money_management/widgets/widgets.dart';
+import 'package:provider/provider.dart';
 
 class EditUser extends StatefulWidget {
-  const EditUser({super.key, required this.userdatalist});
-  final UserModel userdatalist;
+  const EditUser({super.key});
 
   @override
   State<EditUser> createState() => _EditUserState();
@@ -17,17 +17,30 @@ class EditUser extends StatefulWidget {
 class _EditUserState extends State<EditUser> {
   TextEditingController name = TextEditingController();
   TextEditingController phone = TextEditingController();
-  TextEditingController username = TextEditingController();
+  TextEditingController email = TextEditingController();
 
   var formKey = GlobalKey<FormState>();
   bool obscure = true;
 
   @override
   void initState() {
-    name = TextEditingController(text: widget.userdatalist.name);
-    phone = TextEditingController(text: widget.userdatalist.phn);
-    username = TextEditingController(text: widget.userdatalist.mail);
+    final userprovider = Provider.of<UserProvider>(context, listen: false);
+    final userName = userprovider.userName;
+    final userPhone = userprovider.userPhone;
+    final userEmail = userprovider.userEmail;
+
+    name.text = userName;
+    phone.text = userPhone;
+    email.text = userEmail;
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    name.dispose();
+    phone.dispose();
+    email.dispose();
+    super.dispose();
   }
 
   @override
@@ -107,7 +120,7 @@ class _EditUserState extends State<EditUser> {
                             autovalidateMode:
                                 AutovalidateMode.onUserInteraction,
                             textInputAction: TextInputAction.next,
-                            controller: username,
+                            controller: email,
                             decoration: InputDecoration(
                                 contentPadding: const EdgeInsets.symmetric(
                                     horizontal: 15, vertical: 15),
@@ -154,7 +167,7 @@ class _EditUserState extends State<EditUser> {
   Future<void> onbuttonclick() async {
     final namedb = name.text.trim();
     final phonedb = phone.text.trim();
-    final usernamedb = username.text;
+    final usernamedb = email.text.trim();
 
     if (phonedb.contains('-') ||
         phonedb.contains('.') ||
@@ -163,14 +176,15 @@ class _EditUserState extends State<EditUser> {
       showSnackBarr(context, 'Data contains Invalid Characters');
     } else {
       showToast(message: 'User Details Modified');
+      final userprovider = Provider.of<UserProvider>(context, listen: false);
+      final userId = userprovider.userId;
       final useredit = UserModel(
-        id: widget.userdatalist.id,
+        id: userId,
         name: namedb,
         phn: phonedb,
         mail: usernamedb,
       );
-      edituser(useredit);
-      notify();
+      userprovider.editUser(useredit);
       await Navigator.pushReplacement(
           context,
           MaterialPageRoute(

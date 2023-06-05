@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:money_management/constants/color.dart';
 import 'package:money_management/constants/deletepopup.dart';
+import 'package:money_management/db/model/transactions.dart';
 import 'package:money_management/screens/edittransaction/edittransaction.dart';
 import 'package:money_management/widgets/widgets.dart';
 
-PersistentBottomSheetController bottomSheet(context, data) {
+PersistentBottomSheetController bottomSheet(
+    BuildContext context, TransactionModel data) {
   return showBottomSheet(
     backgroundColor: prColor,
     context: context,
@@ -33,7 +35,8 @@ PersistentBottomSheetController bottomSheet(context, data) {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) =>  EditTransaction(transactionlist: data),
+                                  builder: (context) =>
+                                      EditTransaction(transactionlist: data),
                                 ));
                           },
                           child: customIcon(

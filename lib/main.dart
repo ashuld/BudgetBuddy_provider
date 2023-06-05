@@ -6,6 +6,7 @@ import 'package:money_management/db/model/transactions.dart';
 import 'package:money_management/db/model/userdata.dart';
 import 'package:money_management/providers/btmnavprovider.dart';
 import 'package:money_management/providers/splashprovider.dart';
+import 'package:money_management/providers/transactionprovider.dart';
 import 'package:money_management/providers/userprovider.dart';
 import 'package:money_management/screens/splash/splash.dart';
 import 'package:provider/provider.dart';
@@ -27,7 +28,6 @@ Future<void> main() async {
 
   // Open Hive boxes for storing data
   await Hive.openBox<TransactionModel>(transactiondb);
-  await Hive.openBox<UserModel>(userdb);
 
   // Run the app with multiple providers
   runApp(MultiProvider(
@@ -35,11 +35,16 @@ Future<void> main() async {
       // Provider for managing bottom navigation state
       ChangeNotifierProvider(create: (context) => BottomNavigationProvider()),
 
-       // Provider for managing SplashScreen state
+      // Provider for managing SplashScreen state
       ChangeNotifierProvider(create: ((context) => SplashScreenProvider())),
 
       //Provider for managing CreateScreen state
-      ChangeNotifierProvider(create: (context) => UserProvider(),)
+      ChangeNotifierProvider(
+        create: (context) => UserProvider(),
+      ),
+
+      //Provider for Managing Transactions
+      ChangeNotifierProvider(create: (context) => TransactionProvider()),
     ],
     child: const MyApp(),
   ));
@@ -54,6 +59,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
           useMaterial3: true, fontFamily: GoogleFonts.inder().fontFamily),
       debugShowCheckedModeBanner: false,
+      //Navigate to Splash Screen
       home: const ScreenSplash(),
     );
   }

@@ -127,7 +127,6 @@ void showToast({required String message}) {
 
 void showSnackBarr(BuildContext context, content) {
   var snackbar = SnackBar(
-      backgroundColor: Colors.black,
-      content: secText400(data: content));
+      backgroundColor: Colors.black, content: secText400(data: content));
   ScaffoldMessenger.of(context).showSnackBar(snackbar);
 }

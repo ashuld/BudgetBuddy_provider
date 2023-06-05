@@ -4,8 +4,7 @@ import 'package:money_management/constants/color.dart';
 import 'package:money_management/widgets/widgets.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class SplashScreenProvider extends ChangeNotifier{
-
+class SplashScreenProvider extends ChangeNotifier {
   Future<bool> checkLoggedInStatus() async {
     final prefs = await SharedPreferences.getInstance();
     final loggedIn = prefs.getBool('isLogged');
@@ -33,7 +32,8 @@ class SplashScreenProvider extends ChangeNotifier{
                   width: 120,
                   decoration: const BoxDecoration(
                     image: DecorationImage(
-                      image: AssetImage('assets/images/icons8-money-bag-100.png'),
+                      image:
+                          AssetImage('assets/images/icons8-money-bag-100.png'),
                       fit: BoxFit.fill,
                     ),
                   ),

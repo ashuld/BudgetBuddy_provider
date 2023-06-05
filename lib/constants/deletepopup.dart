@@ -2,9 +2,10 @@
 
 import 'package:flutter/material.dart';
 import 'package:money_management/constants/color.dart';
-import 'package:money_management/db/functions/db_functions.dart';
+import 'package:money_management/providers/transactionprovider.dart';
 import 'package:money_management/widgets/bottomnavigation.dart';
 import 'package:money_management/widgets/widgets.dart';
+import 'package:provider/provider.dart';
 
 Future<void> alertMessage(BuildContext context, {required String id}) async {
   return showDialog(
@@ -21,13 +22,16 @@ Future<void> alertMessage(BuildContext context, {required String id}) async {
               child: const Text('No', style: TextStyle(color: prColor))),
           TextButton(
               onPressed: () async {
-                deleteTransaction(id);
-                await refreshTransaction();
-                refreshTransaction();
+                Provider.of<TransactionProvider>(context, listen: false)
+                    .deleteTransaction(id);
+                await Provider.of<TransactionProvider>(context, listen: false)
+                    .refreshTransaction();
+                Provider.of<TransactionProvider>(context, listen: false)
+                    .refreshTransaction();
                 showToast(message: 'Deleted');
-                Navigator.of(context).pushReplacement(
-                  MaterialPageRoute(
-                    builder: (context) => const BottomNavigation(),));
+                Navigator.of(context).pushReplacement(MaterialPageRoute(
+                  builder: (context) => const BottomNavigation(),
+                ));
               },
               child: const Text('Yes', style: TextStyle(color: prColor)))
         ],

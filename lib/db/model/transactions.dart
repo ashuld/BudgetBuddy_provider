@@ -1,4 +1,3 @@
-// ignore_for_file: camel_case_types
 import 'package:hive/hive.dart';
 part 'transactions.g.dart';
 

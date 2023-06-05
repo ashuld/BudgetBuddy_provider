@@ -4,7 +4,7 @@ import 'package:money_management/db/functions/db_functions.dart';
 import 'package:money_management/screens/search/widgets/daterangefilter.dart';
 import 'package:money_management/screens/search/widgets/searchresult.dart';
 
-var filterListener = transactionfilternotifier;
+var filterListener = transfilter;
 
 class ScreenSearch extends SearchDelegate {
   @override
@@ -37,7 +37,7 @@ class ScreenSearch extends SearchDelegate {
           PopupMenuItem(
               onTap: () async {
                 await refreshTransaction();
-                filterListener.value = transactionfilternotifier.value;
+                filterListener.value = transfilter.value;
               },
               child: const Text(
                 'All',
@@ -46,7 +46,7 @@ class ScreenSearch extends SearchDelegate {
           PopupMenuItem(
               onTap: () async {
                 await refreshTransaction();
-                filterListener.value = transactionfilternotifier.value
+                filterListener.value = transfilter.value
                     .where((element) =>
                         element.datetime.day == DateTime.now().day &&
                         element.datetime.month == DateTime.now().month &&
@@ -60,7 +60,7 @@ class ScreenSearch extends SearchDelegate {
           PopupMenuItem(
               onTap: () async {
                 await refreshTransaction();
-                filterListener.value = transactionfilternotifier.value
+                filterListener.value = transfilter.value
                     .where((element) =>
                         element.datetime.day == DateTime.now().day - 1 &&
                         element.datetime.month == DateTime.now().month &&
@@ -76,7 +76,7 @@ class ScreenSearch extends SearchDelegate {
                 await refreshTransaction();
                 final today = DateTime.now();
                 final lastweek = today.subtract(const Duration(days: 7));
-                filterListener.value = transactionfilternotifier.value
+                filterListener.value = transfilter.value
                     .where((element) => element.datetime.isAfter(lastweek))
                     .toList();
               },
@@ -90,7 +90,7 @@ class ScreenSearch extends SearchDelegate {
                   return;
                 } else {
                   await refreshTransaction();
-                  filterListener.value = transactionfilternotifier.value
+                  filterListener.value = transfilter.value
                       .where((element) =>
                           element.datetime.isAfter(
                               first!.subtract(const Duration(days: 1))) &&
@@ -113,7 +113,7 @@ class ScreenSearch extends SearchDelegate {
           PopupMenuItem(
               onTap: () async {
                 await refreshTransaction();
-                filterListener.value = transactionfilternotifier.value;
+                filterListener.value = transfilter.value;
               },
               child: const Text(
                 'All',
@@ -122,7 +122,7 @@ class ScreenSearch extends SearchDelegate {
           PopupMenuItem(
               onTap: () async {
                 await refreshTransaction();
-                filterListener.value = transactionfilternotifier.value
+                filterListener.value = transfilter.value
                     .where((element) => element.type == 'Income')
                     .toList();
               },
@@ -133,7 +133,7 @@ class ScreenSearch extends SearchDelegate {
           PopupMenuItem(
               onTap: () async {
                 await refreshTransaction();
-                filterListener.value = transactionfilternotifier.value
+                filterListener.value = transfilter.value
                     .where((element) => element.type == 'Expense')
                     .toList();
               },

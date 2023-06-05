@@ -30,7 +30,7 @@ Widget userName(name) {
           thickness: FontWeight.bold));
 }
 
-Widget totalBalance() {
+Widget totalBalance(BuildContext context) {
   return Padding(
     padding: const EdgeInsets.only(left: 15),
     child: Row(
@@ -47,7 +47,7 @@ Widget totalBalance() {
   );
 }
 
-Widget balance() {
+Widget balance(BuildContext context) {
   return Padding(
     padding: const EdgeInsets.symmetric(horizontal: 17.5),
     child: Row(
