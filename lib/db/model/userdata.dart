@@ -11,8 +11,7 @@ class UserModel extends HiveObject {
   String phn;
   @HiveField(3)
   String mail;
-  // @HiveField(4)
-  // String password;
+
   UserModel(
       {required this.name,
       required this.phn,

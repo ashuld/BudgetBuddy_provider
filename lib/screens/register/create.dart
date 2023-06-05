@@ -1,9 +1,11 @@
+// ignore_for_file: use_build_context_synchronously
 import 'package:flutter/material.dart';
 import 'package:money_management/constants/color.dart';
-import 'package:money_management/db/functions/db_functions.dart';
 import 'package:money_management/db/model/userdata.dart';
+import 'package:money_management/providers/userprovider.dart';
 import 'package:money_management/widgets/bottomnavigation.dart';
 import 'package:money_management/widgets/widgets.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'widgets/createbackground.dart';
 
@@ -15,9 +17,17 @@ class ScreenCreateAccount extends StatefulWidget {
 }
 
 class _ScreenCreateAccountState extends State<ScreenCreateAccount> {
-  final name = TextEditingController();
-  final phone = TextEditingController();
-  final username = TextEditingController();
+  final TextEditingController name = TextEditingController();
+  final TextEditingController phone = TextEditingController();
+  final TextEditingController username = TextEditingController();
+
+  @override
+  void dispose() {
+    name.dispose();
+    phone.dispose();
+    username.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +50,6 @@ class _ScreenCreateAccountState extends State<ScreenCreateAccount> {
                         padding: const EdgeInsets.symmetric(horizontal: 15),
                         child: TextFormField(
                           autovalidateMode: AutovalidateMode.onUserInteraction,
-                          textInputAction: TextInputAction.next,
                           controller: name,
                           decoration: InputDecoration(
                               contentPadding: const EdgeInsets.symmetric(
@@ -124,7 +133,7 @@ class _ScreenCreateAccountState extends State<ScreenCreateAccount> {
                                 borderRadius: BorderRadius.circular(10)),
                             backgroundColor: prColor),
                         onPressed: () async {
-                          onbuttonclick();
+                          onbuttonclick(context);
                         },
                         child: secText600(data: 'Get Started')),
                   ],
@@ -135,37 +144,34 @@ class _ScreenCreateAccountState extends State<ScreenCreateAccount> {
         ));
   }
 
-  Future<void> onbuttonclick() async {
+  Future<void> onbuttonclick(BuildContext context) async {
     final namedb = name.text.trim();
     final phonedb = phone.text.trim();
-    final usernamedb = username.text;
-    // final passworddb = password.text;
+    final usernamedb = username.text.trim();
     if (namedb.isEmpty) {
       showSnackBarr(context, 'Invalid Name');
     } else if (phonedb.contains('-') ||
-            phonedb.contains('.') ||
-            phonedb.contains(',') ||
-            phonedb.contains(' ')
-        // ||passworddb.contains('_') ||
-        // passworddb.contains('.') ||
-        // passworddb.contains(',') ||
-        // passworddb.contains(' ')
-        ) {
+        phonedb.contains('.') ||
+        phonedb.contains(',') ||
+        phonedb.contains(' ')) {
       showSnackBarr(context, 'Phone No. contains Invalid Characters');
     } else {
+      // Accessing providers
+      final userProvider = Provider.of<UserProvider>(context, listen: false);
+
+      // Saving user details and preferences
+      var prefs = await SharedPreferences.getInstance();
       showToast(message: 'Account Created');
-      reset();
       final userdetails = UserModel(
         id: DateTime.now().microsecondsSinceEpoch.toString(),
         name: namedb,
         phn: phonedb,
         mail: usernamedb,
-        // password: passworddb
       );
-      adduser(userdetails);
-      var prefs = await SharedPreferences.getInstance();
+      userProvider.addUser(userdetails);
       prefs.setBool('isLogged', true);
-// ignore: use_build_context_synchronously
+
+      // Navigating to the main screen
       await Navigator.pushReplacement(
           context,
           MaterialPageRoute(

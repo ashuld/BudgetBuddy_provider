@@ -24,24 +24,6 @@ class _ScreenAddTransactionState extends State<ScreenAddTransaction> {
   final TextEditingController note = TextEditingController();
   final TextEditingController amount = TextEditingController();
 
-  FocusNode ex = FocusNode();
-  FocusNode amount_ = FocusNode();
-  FocusNode name = FocusNode();
-
-  @override
-  void initState() {
-    super.initState();
-    ex.addListener(() {
-      setState(() {});
-    });
-    name.addListener(() {
-      setState(() {});
-    });
-    amount_.addListener(() {
-      setState(() {});
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -166,7 +148,6 @@ class _ScreenAddTransactionState extends State<ScreenAddTransaction> {
                           child: TextFormField(
                             autovalidateMode:
                                 AutovalidateMode.onUserInteraction,
-                            focusNode: name,
                             controller: transaction,
                             decoration: InputDecoration(
                                 contentPadding: const EdgeInsets.symmetric(
@@ -186,7 +167,6 @@ class _ScreenAddTransactionState extends State<ScreenAddTransaction> {
                             autovalidateMode:
                                 AutovalidateMode.onUserInteraction,
                             keyboardType: TextInputType.number,
-                            focusNode: amount_,
                             controller: amount,
                             decoration: InputDecoration(
                                 contentPadding: const EdgeInsets.symmetric(
@@ -230,7 +210,6 @@ class _ScreenAddTransactionState extends State<ScreenAddTransaction> {
                       Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 15),
                           child: TextFormField(
-                            focusNode: ex,
                             controller: note,
                             decoration: InputDecoration(
                                 contentPadding: const EdgeInsets.symmetric(
@@ -270,8 +249,8 @@ class _ScreenAddTransactionState extends State<ScreenAddTransaction> {
     final nam = transaction.text.trim();
     final amo = amount.text;
     final no = note.text;
-    if (double.parse(amo)<= 0||
-      amo.isEmpty ||
+    if (double.parse(amo) <= 0 ||
+        amo.isEmpty ||
         amo.contains('-') ||
         amo.contains('.') ||
         amo.contains(',')) {

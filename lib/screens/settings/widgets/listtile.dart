@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:money_management/constants/color.dart';
 import 'package:money_management/db/functions/db_functions.dart';
 import 'package:money_management/db/model/userdata.dart';
+import 'package:money_management/providers/transactionprovider.dart';
 import 'package:money_management/screens/about/about.dart';
 import 'package:money_management/screens/edituser/edituser.dart';
 import 'package:money_management/screens/privacy/privacy.dart';
 import 'package:money_management/screens/splash/splash.dart';
 import 'package:money_management/screens/terms/terms.dart';
 import 'package:money_management/widgets/widgets.dart';
+import 'package:provider/provider.dart';
 
 Widget userUpdate(context,{required UserModel user}) {
   return Padding(
@@ -46,8 +48,7 @@ Widget dataReset(context) {
                         child: prText400(data: 'No')),
                     TextButton(
                         onPressed: () {
-                          reset();
-                          refreshTransaction();
+                          Provider.of<TransactionProvider>(context).reset();
                           Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(

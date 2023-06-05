@@ -18,7 +18,6 @@ class _EditUserState extends State<EditUser> {
   TextEditingController name = TextEditingController();
   TextEditingController phone = TextEditingController();
   TextEditingController username = TextEditingController();
-  // TextEditingController password = TextEditingController();
 
   var formKey = GlobalKey<FormState>();
   bool obscure = true;
@@ -28,7 +27,6 @@ class _EditUserState extends State<EditUser> {
     name = TextEditingController(text: widget.userdatalist.name);
     phone = TextEditingController(text: widget.userdatalist.phn);
     username = TextEditingController(text: widget.userdatalist.mail);
-    // password = TextEditingController(text: widget.userdatalist.password);
     super.initState();
   }
 
@@ -132,50 +130,6 @@ class _EditUserState extends State<EditUser> {
                             },
                           )),
                       box20(),
-                      // Padding(
-                      //     padding: const EdgeInsets.symmetric(horizontal: 15),
-                      //     child: TextFormField(
-                      //       maxLength: 6,
-                      //       obscureText: obscure,
-                      //       autovalidateMode:
-                      //           AutovalidateMode.onUserInteraction,
-                      //       textInputAction: TextInputAction.next,
-                      //       keyboardType: TextInputType.number,
-                      //       controller: password,
-                      //       decoration: InputDecoration(
-                      //           suffixIcon: obscure == true
-                      //               ? IconButton(
-                      //                   icon: const Icon(Icons.lock_outline),
-                      //                   onPressed: () {
-                      //                     setState(() {
-                      //                       obscure = false;
-                      //                     });
-                      //                   },
-                      //                 )
-                      //               : IconButton(
-                      //                   icon: const Icon(Icons.lock_open_sharp),
-                      //                   onPressed: () {
-                      //                     setState(() {
-                      //                       obscure = true;
-                      //                     });
-                      //                   },
-                      //                 ),
-                      //           contentPadding: const EdgeInsets.symmetric(
-                      //               horizontal: 15, vertical: 15),
-                      //           labelText: 'Password',
-                      //           labelStyle: const TextStyle(
-                      //             fontSize: 17,
-                      //             color: unselected,
-                      //           ),
-                      //           enabledBorder: unselectedBorder(),
-                      //           focusedBorder: selectedBorder()),
-                      //       validator: (value) {
-                      //         if (value!.isEmpty) {
-                      //           return 'Password Required';
-                      //         }
-                      //         return null;
-                      //       },
-                      //     )),
                       box10(),
                       ElevatedButton(
                           style: ElevatedButton.styleFrom(
@@ -201,26 +155,20 @@ class _EditUserState extends State<EditUser> {
     final namedb = name.text.trim();
     final phonedb = phone.text.trim();
     final usernamedb = username.text;
-    // final passworddb = password.text;
+
     if (phonedb.contains('-') ||
         phonedb.contains('.') ||
         phonedb.contains(',') ||
-        phonedb.contains(' ') 
-        // ||passworddb.contains('_') ||
-        // passworddb.contains('.') ||
-        // passworddb.contains(',') ||
-        // passworddb.contains(' ')
-        ) {
+        phonedb.contains(' ')) {
       showSnackBarr(context, 'Data contains Invalid Characters');
     } else {
       showToast(message: 'User Details Modified');
       final useredit = UserModel(
-          id: widget.userdatalist.id,
-          name: namedb,
-          phn: phonedb,
-          mail: usernamedb,
-          // password: passworddb
-          );
+        id: widget.userdatalist.id,
+        name: namedb,
+        phn: phonedb,
+        mail: usernamedb,
+      );
       edituser(useredit);
       notify();
       await Navigator.pushReplacement(

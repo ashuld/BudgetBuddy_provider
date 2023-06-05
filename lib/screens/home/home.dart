@@ -5,17 +5,13 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:money_management/constants/color.dart';
 import 'package:money_management/db/functions/db_functions.dart';
 import 'package:money_management/db/model/transactions.dart';
-import 'package:money_management/db/model/userdata.dart';
+import 'package:money_management/providers/userprovider.dart';
 import 'package:money_management/screens/home/widgets/contenthome.dart';
 import 'package:money_management/screens/home/widgets/drawer.dart';
 import 'package:money_management/screens/home/widgets/home_seeall.dart';
 import 'package:money_management/screens/home/widgets/homelist.dart';
 import 'package:money_management/widgets/widgets.dart';
-
-var newname;
-var phno;
-var email;
-var password;
+import 'package:provider/provider.dart';
 
 class ScreenHome extends StatefulWidget {
   const ScreenHome({super.key});
@@ -25,18 +21,15 @@ class ScreenHome extends StatefulWidget {
 }
 
 class _ScreenHomeState extends State<ScreenHome> {
-  var name;
-  var phnno;
-  var mail;
-
+  var nnlist = [];
   final GlobalKey<ScaffoldState> key_ = GlobalKey();
 
   @override
   Widget build(BuildContext context) {
-    notify();
+    //  final userProvider = Provider.of<UserProvider>(context, listen: false);
     final box = Hive.box<TransactionModel>(transactiondb);
     return WillPopScope(
-      onWillPop: () async{
+      onWillPop: () async {
         SystemNavigator.pop();
         return false;
       },
@@ -45,28 +38,19 @@ class _ScreenHomeState extends State<ScreenHome> {
           key: key_,
           endDrawer: Drawer(
             elevation: 10.0,
-            child: ValueListenableBuilder(
-                valueListenable: usernotifier,
-                builder: (BuildContext context, List<UserModel> userlist,
-                    Widget? child) {
-                  for (var element in userlist) {
-                    name = element.name;
-                    phnno = element.phn;
-                    mail = element.mail;
-                    newname = UserModel(name: element.name, phn: element.phn, mail: element.mail,id: element.id 
-                    // password: element.password 
-                    );
-                  }
-                  return ListView(
-                    children: [
-                      header(name, phnno, mail),
-                      // tile1(context),
-                      // const Divider(height: 3.0),
-                      tile2(context, newname),
-                      tile3(context)
-                    ],
-                  );
-                }),
+            child:
+                Consumer<UserProvider>(builder: (context, userprovider, child) {
+              String name = userprovider.userName;
+              String phnno = userprovider.userPhone;
+              String mail = userprovider.userEmail;
+              return ListView(
+                children: [
+                  header(name, phnno, mail),
+                  tile2(context, nnlist),
+                  tile3(context)
+                ],
+              );
+            }),
           ),
           backgroundColor: secColor,
           body: SafeArea(
@@ -81,7 +65,8 @@ class _ScreenHomeState extends State<ScreenHome> {
                             children: [
                               Container(
                                 width: MediaQuery.of(context).size.width,
-                                height: MediaQuery.of(context).size.height * .28,
+                                height:
+                                    MediaQuery.of(context).size.height * .28,
                                 decoration: const BoxDecoration(
                                     color: prColor,
                                     borderRadius: BorderRadius.only(
@@ -95,16 +80,12 @@ class _ScreenHomeState extends State<ScreenHome> {
                                       child: ListView(
                                         children: [
                                           welcome(key_),
-                                          ValueListenableBuilder(
-                                              valueListenable: usernotifier,
-                                              builder: (BuildContext context,
-                                                  List<UserModel> userlist,
-                                                  child) {
-                                                for (var element in userlist) {
-                                                  name = element.name;
-                                                }
-                                                return userName(name);
-                                              })
+                                          Consumer<UserProvider>(builder:
+                                              (BuildContext context,
+                                                  userprovider, child) {
+                                            String name = userprovider.userName;
+                                            return userName(name);
+                                          })
                                         ],
                                       ),
                                     )
