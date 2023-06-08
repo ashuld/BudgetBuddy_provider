@@ -3,11 +3,10 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:money_management/constants/color.dart';
 import 'package:money_management/constants/deletepopup.dart';
 import 'package:money_management/db/model/transactions.dart';
+import 'package:money_management/providers/transactionprovider.dart';
 import 'package:money_management/screens/edittransaction/edittransaction.dart';
-import 'package:money_management/screens/search/search.dart';
 import 'package:money_management/screens/search/widgets/searchcard.dart';
-
-
+import 'package:provider/provider.dart';
 
 class WidgetSearchResult extends StatelessWidget {
   final String query;
@@ -19,10 +18,9 @@ class WidgetSearchResult extends StatelessWidget {
       height: MediaQuery.of(context).size.height,
       width: MediaQuery.of(context).size.width,
       color: secColor,
-      child: ValueListenableBuilder(
-        valueListenable: filterListener,
+      child: Consumer<TransactionProvider>(
         builder: (context, newvalue, child) {
-          return filterListener.value.isEmpty
+          return newvalue.transfilter.isEmpty
               ? const Center(
                   child: Text(
                     'No Data',
@@ -34,11 +32,11 @@ class WidgetSearchResult extends StatelessWidget {
                 )
               : ListView.builder(
                   itemBuilder: (context, index) {
-                    final value = newvalue[index];
+                    final value = newvalue.transfilter[index];
                     if (value.category
                             .toLowerCase()
                             .contains(query.toLowerCase().trim()) ||
-                        value.note
+                        value.amount
                             .toString()
                             .toLowerCase()
                             .contains(query.toLowerCase().trim()) ||
@@ -93,7 +91,7 @@ class WidgetSearchResult extends StatelessWidget {
                       return Container();
                     }
                   },
-                  itemCount: newvalue.length,
+                  itemCount: newvalue.transfilter.length,
                 );
         },
       ),

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:money_management/constants/color.dart';
-import 'package:money_management/db/functions/db_functions.dart';
+import 'package:money_management/providers/income_expense.dart';
 import 'package:money_management/providers/transactionprovider.dart';
 import 'package:money_management/providers/userprovider.dart';
 import 'package:money_management/screens/home/widgets/contenthome.dart';
@@ -27,14 +27,6 @@ class _ScreenHomeState extends State<ScreenHome> {
     Provider.of<TransactionProvider>(context, listen: false)
         .refreshTransaction();
     super.initState();
-  }
-
-  @override
-  void didChangeDependencies() {
-    Provider.of<UserProvider>(context, listen: false).getAllUsers();
-    Provider.of<TransactionProvider>(context, listen: false)
-        .refreshTransaction();
-    super.didChangeDependencies();
   }
 
   @override
@@ -125,8 +117,7 @@ class _ScreenHomeState extends State<ScreenHome> {
                                     ],
                                     color: plain,
                                     borderRadius: BorderRadius.circular(15)),
-                                child: ValueListenableBuilder(
-                                  valueListenable: transactionnotifier,
+                                child: Consumer<IncomeExpenseProvider>(
                                   builder: (context, value, child) {
                                     return Column(
                                       children: [

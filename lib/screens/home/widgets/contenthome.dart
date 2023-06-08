@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:money_management/constants/color.dart';
-import 'package:money_management/db/functions/calculations.dart';
+import 'package:money_management/providers/income_expense.dart';
 import 'package:money_management/widgets/widgets.dart';
+import 'package:provider/provider.dart';
 
 Widget welcome(key_) {
   return Padding(
@@ -31,16 +32,17 @@ Widget userName(name) {
 }
 
 Widget totalBalance(BuildContext context) {
+  var tpProvider = Provider.of<IncomeExpenseProvider>(context, listen: false);
   return Padding(
     padding: const EdgeInsets.only(left: 15),
     child: Row(
       children: [
         Text(
-          '₹ ${totaler()}',
+          '₹ ${tpProvider.totaler()}',
           style: TextStyle(
               fontWeight: FontWeight.bold,
               fontSize: 25,
-              color: totaler() < 0 ? expensecol : incomecol),
+              color: tpProvider.totaler() < 0 ? expensecol : incomecol),
         )
       ],
     ),
@@ -48,18 +50,19 @@ Widget totalBalance(BuildContext context) {
 }
 
 Widget balance(BuildContext context) {
+  var tpProvider = Provider.of<IncomeExpenseProvider>(context, listen: false);
   return Padding(
     padding: const EdgeInsets.symmetric(horizontal: 17.5),
     child: Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Text(
-          '₹ ${incometotaler()}',
+          '₹ ${tpProvider.incometotaler()}',
           style: const TextStyle(
               fontWeight: FontWeight.w500, fontSize: 18, color: incomecol),
         ),
         Text(
-          '₹ ${expensetotaler()}',
+          '₹ ${tpProvider.expensetotaler()}',
           style: const TextStyle(
               fontWeight: FontWeight.w500, fontSize: 18, color: expensecol),
         ),

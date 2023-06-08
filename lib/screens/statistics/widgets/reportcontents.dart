@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:money_management/constants/color.dart';
-import 'package:money_management/db/functions/db_functions.dart';
 import 'package:money_management/db/functions/piechartcal.dart';
-import 'package:money_management/db/model/transactions.dart';
+import 'package:money_management/providers/transactionprovider.dart';
 import 'package:pie_chart/pie_chart.dart';
+import 'package:provider/provider.dart';
 
 Widget pieChart(context, dataMap) {
-  return ValueListenableBuilder(
-    valueListenable: transactionnotifier,
-    builder: (context, List<TransactionModel> value, child) {
-      refreshTransaction();
+  return Consumer<TransactionProvider>(
+    builder: (context, value, child) {
       var total = foodtotal() +
           entertainmenttotal() +
           educationtotal() +

@@ -1,12 +1,11 @@
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:money_management/db/functions/db_functions.dart';
 import 'package:money_management/db/model/transactions.dart';
+import 'package:money_management/providers/transactionprovider.dart';
 
 double total = 0;
 final box = Hive.box<TransactionModel>(transactiondb);
 
 double foodtotal() {
-  refreshTransaction();
   var totals = box.values.toList();
   List a = [0.0];
   for (var i = 0; i < totals.length; i++) {
@@ -19,7 +18,6 @@ double foodtotal() {
 }
 
 double entertainmenttotal() {
-  refreshTransaction();
   var totals = box.values.toList();
   List a = [0.0];
   for (var i = 0; i < totals.length; i++) {
@@ -32,7 +30,6 @@ double entertainmenttotal() {
 }
 
 double educationtotal() {
-  refreshTransaction();
   var totals = box.values.toList();
   List a = [0.0];
   for (var i = 0; i < totals.length; i++) {
@@ -45,7 +42,6 @@ double educationtotal() {
 }
 
 double transportationtotal() {
-  refreshTransaction();
   var totals = box.values.toList();
   List a = [0.0];
   for (var i = 0; i < totals.length; i++) {
@@ -58,7 +54,6 @@ double transportationtotal() {
 }
 
 double personalcaretotal() {
-  refreshTransaction();
   var totals = box.values.toList();
   List a = [0.0];
   for (var i = 0; i < totals.length; i++) {
@@ -71,7 +66,6 @@ double personalcaretotal() {
 }
 
 double loanstotal() {
-  refreshTransaction();
   var totals = box.values.toList();
   List a = [0.0];
   for (var i = 0; i < totals.length; i++) {
@@ -84,7 +78,6 @@ double loanstotal() {
 }
 
 double medicaltotal() {
-  refreshTransaction();
   var totals = box.values.toList();
   List a = [0.0];
   for (var i = 0; i < totals.length; i++) {
@@ -97,7 +90,6 @@ double medicaltotal() {
 }
 
 double otherexpensestotal() {
-  refreshTransaction();
   var totals = box.values.toList();
   List a = [0.0];
   for (var i = 0; i < totals.length; i++) {

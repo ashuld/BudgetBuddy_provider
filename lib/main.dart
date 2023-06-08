@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:money_management/db/functions/db_functions.dart';
 import 'package:money_management/db/model/transactions.dart';
 import 'package:money_management/db/model/userdata.dart';
 import 'package:money_management/providers/btmnavprovider.dart';
+import 'package:money_management/providers/income_expense.dart';
 import 'package:money_management/providers/splashprovider.dart';
 import 'package:money_management/providers/transactionprovider.dart';
 import 'package:money_management/providers/userprovider.dart';
@@ -26,9 +26,6 @@ Future<void> main() async {
     Hive.registerAdapter(UserModelAdapter());
   }
 
-  // Open Hive boxes for storing data
-  await Hive.openBox<TransactionModel>(transactiondb);
-
   // Run the app with multiple providers
   runApp(MultiProvider(
     providers: [
@@ -45,6 +42,8 @@ Future<void> main() async {
 
       //Provider for Managing Transactions
       ChangeNotifierProvider(create: (context) => TransactionProvider()),
+
+      ChangeNotifierProvider(create: (context) => IncomeExpenseProvider()),
     ],
     child: const MyApp(),
   ));
